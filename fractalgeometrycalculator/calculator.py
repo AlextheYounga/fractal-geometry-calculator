@@ -5,15 +5,6 @@ import math
 from .functions import *
 import sys
 
-# Arbitrary fractal scales
-scales = {
-    '1': 15821,
-    '2': 7911,
-    '4': 3955,
-    '8': 1978,
-    '16': 989,
-    '32': 494,
-}
 
 # Parsing csv data
 with open('fractalgeometrycalculator/imports/SPXprices.csv', newline='', encoding='utf-8') as csvfile:
@@ -29,8 +20,20 @@ with open('fractalgeometrycalculator/imports/SPXprices.csv', newline='', encodin
         # Append value dictionary to data
         assetData[i] = rows
 
-
 prices = extractData(assetData, 'close')
+
+# Arbitrary fractal scales
+count = len(prices)
+scales = {
+    '1': count,
+    '2': int(count / 2),
+    '4': int(count / 4),
+    '8': int(count / 8),
+    '16': int(count / 16),
+    '32': int(count / 32),
+}
+
+
 returns = returnsCalculator(prices)
 deviations = deviationsCalculator(returns, scales)
 runningTotals = runningTotalsCalculator(deviations, scales)
