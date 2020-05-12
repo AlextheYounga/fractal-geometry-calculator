@@ -35,26 +35,50 @@ def extractData(data, key):
 # Returns a list of data from a nested object that contains specific scales
 def scaledDataCollector(scales, data, key):
     values = []
-    if (type(key) == list):
-        if len(key) == 2:
-            for scale, cells in scales.items():
-                value = float(data[scale][key[0]][key[1]])
+    if (type(scales) == list):
+        if (type(key) == list):
+            if len(key) == 2:
+                for scale in scales:
+                    value = float(data[scale][key[0]][key[1]])
+                    values.append(value)
+            if len(key) == 3:
+                for scale in scales:
+                    value = float(data[scale][key[0]][key[1]][key[2]])
+                    values.append(value)
+            if len(key) == 4:
+                for scale in scales:
+                    value = float(data[scale][key[0]][key[1]][key[2]][key[3]])
+                    values.append(value)
+            if len(key) > 4:
+                return 'Nest level too deep to retrieve via function.'
+        else:
+            for scale in scales:
+                value = float(data[scale][key])
                 values.append(value)
-        if len(key) == 3:
-            for scale, cells in scales.items():
-                value = float(data[scale][key[0]][key[1]][key[2]])
-                values.append(value)
-        if len(key) == 4:
-            for scale, cells in scales.items():
-                value = float(data[scale][key[0]][key[1]][key[2]][key[3]])
-                values.append(value)
-        if len(key) > 4:
-            return 'Nest level too deep to retrieve via function.'
+                
     else:
-        for scale, cells in scales.items():
-            value = float(data[scale][key])
-            values.append(value)
+        if (type(key) == list):
+            if len(key) == 2:
+                for scale, cells in scales.items():
+                    value = float(data[scale][key[0]][key[1]])
+                    values.append(value)
+            if len(key) == 3:
+                for scale, cells in scales.items():
+                    value = float(data[scale][key[0]][key[1]][key[2]])
+                    values.append(value)
+            if len(key) == 4:
+                for scale, cells in scales.items():
+                    value = float(data[scale][key[0]][key[1]][key[2]][key[3]])
+                    values.append(value)
+            if len(key) > 4:
+                return 'Nest level too deep to retrieve via function.'
+        else:
+            for scale, cells in scales.items():
+                value = float(data[scale][key])
+                values.append(value)
+        
     return values
+
 
 # Creates a list of returns from a list of prices.
 def returnsCalculator(prices):
@@ -68,6 +92,12 @@ def returnsCalculator(prices):
 def chunks(lst, n):
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
+
+def backwardChunks(lst, n):
+    start = 0
+    for end in range(len(lst)%n, len(lst)+1, n):
+        yield lst[start:end]
+        start = end
 
 
 # Formulas for chunking data into the different scales (i.e. 1:1, 1:2, 1:4, ... 1:32)

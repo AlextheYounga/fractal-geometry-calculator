@@ -2,6 +2,7 @@ import csv
 import statistics
 from scipy import stats
 import math
+from .export import exportFractal
 from .functions import *
 import sys
 
@@ -72,7 +73,7 @@ fractalResults = {
 }
 # Adding rescale ranges to final data
 for scale, cells in scales.items():
-    fractalResults['rescaleRange'][scale] = rangeStats[scale]['keyStats']['rescaleRangeAvg']
+    fractalResults['rescaleRange'][scale] = round(rangeStats[scale]['keyStats']['rescaleRangeAvg'], 2)
 
 # Calculating linear regression of rescale range logs
 logRRs = scaledDataCollector(scales, rangeStats, ['keyStats', 'logRR'])
@@ -116,27 +117,29 @@ def fractalCalculator(x, y):
     slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
     results = {
         'fullSeries': {
-            'hurstExponent': slope,
-            'fractalDimension': 2 - slope,
-            'r-squared': r_value**2,
-            'p-value': p_value,
-            'standardError': std_err
+            'hurstExponent': round(slope, 2),
+            'fractalDimension': round((2 - slope), 2),
+            'r-squared': round(r_value**2, 2),
+            'p-value': round(p_value, 2),
+            'standardError': round(std_err, 2)
         },
     }
 
     for i, section in sections.items():
         slope, intercept, r_value, p_value, std_err = stats.linregress(section['x'], section['y'])
         results[i] = {
-            'hurstExponent': slope,
-            'fractalDimension': 2 - slope,
-            'r-squared': r_value**2,
-            'p-value': p_value,
-            'standardError': std_err
+            'hurstExponent': round(slope, 2),
+            'fractalDimension': round((2 - slope), 2),
+            'r-squared': round(r_value**2, 2),
+            'p-value': round(p_value, 2),
+            'standardError': round(std_err, 2)
         }
     return results
 
 # Results
 fractalResults['regressionResults'] = fractalCalculator(logScales, logRRs)
 print(json.dumps(fractalResults, indent=1))
-done = True
+
+# Export to CSV
+exportFractal(fractalResults)
 
