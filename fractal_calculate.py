@@ -148,13 +148,13 @@ def fractalCalculator(output='table'):
     ticker      :str
                  stock ticker, stock data is retrieved from IEX Data
     output      :str
-                 Can either be table, csv, or tweet
+                 Can either be table or csv
                  (output always goes to table in terminal, table param ensures it only goes to table.)
 
     Returns
     -------
     dict
-        Returns fractal statistics and can export to csv, output to terminal and tweet
+        Returns fractal statistics and can export to csv, output to terminal
 
     """
     scales, range_stats = collect_key_stats()
