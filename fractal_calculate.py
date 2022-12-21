@@ -12,7 +12,7 @@ from tabulate import tabulate
 
 
 def parseCSV():
-    with open('fractalgeometrycalculator/imports/SPXprices.csv', newline='', encoding='utf-8') as csvfile:
+    with open('storage/SPXprices.csv', newline='', encoding='utf-8') as csvfile:
         assetData = []
         reader = csv.DictReader(csvfile)
 

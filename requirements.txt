@@ -3,3 +3,4 @@ texttable
 numpy
 tabulate
 pandas
+colored
